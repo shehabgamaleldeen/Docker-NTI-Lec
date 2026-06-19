@@ -1,51 +1,54 @@
-import { useState } from 'react';
-import './RegisterForm.css';
+import { useState } from 'react'
+import './RegisterForm.css'
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    password: ''
-  });
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
+    password: '',
+  })
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState({ type: '', text: '' })
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage({ type: '', text: '' });
+    e.preventDefault()
+    setLoading(true)
+    setMessage({ type: '', text: '' })
 
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `http://${window.location.hostname}:5000/auth/register`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
         },
-        body: JSON.stringify(formData)
-      });
+      )
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (response.ok) {
-        setMessage({ type: 'success', text: data.message });
-        setFormData({ name: '', email: '', password: '' });
+        setMessage({ type: 'success', text: data.message })
+        setFormData({ name: '', email: '', password: '' })
       } else {
-        setMessage({ type: 'error', text: data.message });
+        setMessage({ type: 'error', text: data.message })
       }
     } catch (error) {
-      setMessage({ type: 'error', text: 'Failed to connect to server' });
+      setMessage({ type: 'error', text: 'Failed to connect to server' })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <div className="register-container">
@@ -98,9 +101,7 @@ const RegisterForm = () => {
           </div>
 
           {message.text && (
-            <div className={`message ${message.type}`}>
-              {message.text}
-            </div>
+            <div className={`message ${message.type}`}>{message.text}</div>
           )}
 
           <button type="submit" className="submit-btn" disabled={loading}>
@@ -116,11 +117,13 @@ const RegisterForm = () => {
         </form>
 
         <div className="register-footer">
-          <p>Already have an account? <a href="#login">Sign in</a></p>
+          <p>
+            Already have an account? <a href="#login">Sign in</a>
+          </p>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default RegisterForm;
+export default RegisterForm
