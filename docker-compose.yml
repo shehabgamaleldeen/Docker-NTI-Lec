@@ -28,7 +28,7 @@ services:
 
   # MongoDB Database
   mongodb:
-    image: mongo:4.4
+    image: mongo:latest
     container_name: mongodb_server
     environment:
       - MONGO_INITDB_ROOT_USERNAME=admin
